@@ -1,0 +1,58 @@
+\chapter{先行研究}
+\section{構造特徴を用いたグラフ畳み込みネットワーク}
+グラフ畳み込みネットワーク\cite{gcn}をベースにし、グラフの構造特徴の情報も学習させたモデルが提案された\cite{GCN_SS}。手法の概形は図\ref{fig:architecture}の通りである。
+
+\begin{figure*}[htbp]
+  \centering
+  \includegraphics[width=1.0\hsize]{figures/simple.eps}
+  \caption{\cite{GCN_SS}の手法(2層グラフ畳み込みネットワークを用いたモデル)}
+  \label{fig:architecture}
+\end{figure*}
+
+\newpage{}
+
+
+\begin{figure*}[htbp]
+  \centering
+  \includegraphics[width=1.0\hsize]{figures/GCN_SS.pdf}
+  \caption{\cite{GCN_SS}の手法のおよその流れ}
+  \label{fig:architecture}
+\end{figure*}
+
+
+この手法においては、グラフ畳み込みネットワークの目的関数に構造特徴を保持する項を加えることにより、教師あり学習の目的関数と教師なし学習の目的関数のどちらも最適化しようとする手法である。教師あり損失関数は、グラフ畳み込みネットワークと同じ構造を用いラベル予測をするものであり、教師なし損失関数では、畳み込みネットワーク１層目における出力において構造特徴を保持するに学習するモデルとなっている。構造特徴の目的関数はトレードオフパラメータ$\alpha$を用いて表される。
+\begin{equation}
+L = (1-\alpha) L_{supervised} + \alpha L_{unsupervised}
+\end{equation}
+ここで、$L_{supervised}$は教師あり学習によって求まる損失関数であり、$L_{unsupervised}$は教師なし学習によって求まる損失関数である。
+
+\subsection{教師あり損失関数}
+教師あり学習におけるラベル予測は\cite{gcn}で用いられるものと同じであり、教師あり損失関数は以下のようになる
+\begin{equation}
+L_{supervised} = - \sum_{l \in Y_{l}} \sum_{f=1}^{F} Y_{lf} lnZ_{lf}
+\end{equation}
+ここで$Y_{l}$はラベル付けされたノードの場合1、それ以外で0で表される。
+
+\subsection{構造特徴行列の計算}
+構造特徴は、入力行列である隣接行列により、各ノードごとの構造特徴をそれぞれ計算される。提案手法で用いる構造特徴はノードごとに計算される中心性である、媒介中心性、近接中心性、次数中心性、固有ベクトル中心性、pagerankなどである。それぞれのノードごとの特徴量を全ての構造特徴において結合したものを構造特徴行列$ R\in R^{N\times S}$とする。Nはノード数、Sは用いる構造特徴の総数である。この構造特徴は使うデータセット によって一意に定まるため、一度計算したら再度計算する必要性はないため、モデル全体の計算量に対する影響はとても低い。
+
+\subsection{教師なし損失関数}
+
+提案手法においては、2層のグラフ畳み込みネットワークを用いる。1層目の畳込み層の関数を$GCN_1$、2層目の畳込み層の関数を$GCN_2$とすると、グラフ畳み込みネットワークにおける順伝播は以下の式で表せる。\\
+\begin{eqnarray}
+H_{hid} = GCN_1(X,A)\\
+H_{out}=GCN_2(H_{hid} , A)
+\end{eqnarray}
+構造特徴保持のための学習を$H_{hid}$からそれぞれのノードにおける特徴ベクトル$\hat{R}$を計算する層を導入する。2層のグラフ畳み込みネットワークを用いる場合は、1層目の畳み込み層における出力から派生させて特徴ベクトルを計算する。それぞれのノードにおける重みパラメータ{\bf $\omega$}を用いることで特徴ベクトル$\hat{R} \in R^{N\times S}$は以下のように計算できる。
+\begin{equation}
+\hat{R} = f(w, H_{hid})
+\end{equation}
+
+出力された特徴ベクトルが，グラフ構造から計算された構造特徴と等しくなるように学習を行うことで，構造特徴の保持を行う．グラフから計算した構造特徴と出力された特徴ベクトルの2乗誤差を用いて損失関数の計算を行う．
+\begin{equation}
+L_{unsupervised} = \sum_{i=1}^{N} ||R_{i} - \hat{R_{i}}||^{2}
+\end{equation}
+
+
+
+

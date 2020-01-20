@@ -1,0 +1,70 @@
+\documentclass[a4j,12pt,onecolumn,oneside,final]{jreport}
+
+%\usepackage{gthesis}
+\usepackage{gthesis_myown}
+
+
+\usepackage{amsmath,amsthm,amssymb,ascmac}
+\usepackage{fancybox}
+\usepackage{slashbox}
+%\usepackage[dviout]{color,graphics}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{color}
+\usepackage{psfrag}
+%\usepackage{upgreek}
+\usepackage{bm}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{my-macros}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\年度{令和1年度}
+%\提出年月{平成30年7月}
+\提出年月{令和1年1月}
+
+\題名{構造特徴とattentionメカニズムを用いた \\GNNの半教師あり学習}
+\梗概題名{構造特徴とattentionメカニズムを用いた\\GNNの半教師あり学習}
+%\題名{楽に卒業する方法に関する基礎的研究\\
+%			--- そもそもそれは可能か？ ---}
+%\梗概題名{楽に卒業する方法に関する基礎的研究\\
+%			--- そもそもそれは可能か？ ---}
+
+\指導教員名A{村田 剛志}
+\職名A{准教授}
+
+
+%\所属学科{電気電子工学科}{}
+\所属学科{情報工学科}{}
+\学籍番号{16B16163}
+\氏名{吉川 純平}
+
+\内容梗概{\input{abstract}}
+
+
+\begin{document}
+% ----------------------------------------------------------------------
+% 表紙
+\maketitle
+% ----------------------------------------------------------------------
+% 目次
+\setcounter{page}{1}
+\renewcommand{\thepage}{\roman{page}}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+% ----------------------------------------------------------------------
+% 内容
+\setcounter{page}{1}
+\renewcommand{\thepage}{\arabic{page}}
+\input{introduction}
+\input{background}
+\input{comparison}
+\input{method}
+\input{experiments}
+\input{conclusion}
+\input{acknowledgment}
+\input{reference}
+%\input{appendix}
+% ----------------------------------------------------------------------
+\end{document}
